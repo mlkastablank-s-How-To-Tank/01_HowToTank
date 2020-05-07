@@ -16,8 +16,32 @@ class HOWTOTANK_API ATankyPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
-	ATank* GetControlledTank() const;
+
 
 	virtual void BeginPlay() override;
+	//Let it tick
+	virtual void Tick(float DeltaTime) override;
+
+private:
+	//Barrel tracking
+	virtual void Aim();
+
+
+
+	ATank* GetControlledTank() const;
+
+
 	
+
+	//Get the sight of the hit location, pass a reference to FVector
+
+	bool GetSightHitLoc(FVector& OutHitLoc) const;
+
+	UPROPERTY(EditAnywhere)
+	//Default pos 
+	float CrossHairXLoc = 0.5;
+
+	UPROPERTY(EditAnywhere)
+	//Accurate Y loc, dont @me
+	float CrossHairYLoc = 0.333333;
 };
