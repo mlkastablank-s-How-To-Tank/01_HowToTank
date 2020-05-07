@@ -10,7 +10,11 @@ void ATankyPlayerController::BeginPlay() {
 	Super::BeginPlay();
 
 
+	//Defines the possessed tank
 	auto PossessedTank = GetControlledTank();
+
+
+	//You can read right?
 
 	if (!PossessedTank) {
 		UE_LOG(LogTemp, Warning, TEXT("No tank being possessed"))
