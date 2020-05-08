@@ -22,6 +22,7 @@ public:
 	//Let it tick
 	virtual void Tick(float DeltaTime) override;
 
+
 private:
 	//Barrel tracking
 	virtual void Aim();
@@ -37,6 +38,11 @@ private:
 
 	bool GetSightHitLoc(FVector& OutHitLoc) const;
 
+	bool GetLookVectorHitLoc(FVector WorldDir, FVector & Hitloc) const;
+
+	bool GetLookDir(FVector2D ScreenLoc, FVector & WorldDir) const;
+
+
 	UPROPERTY(EditAnywhere)
 	//Default pos 
 	float CrossHairXLoc = 0.5;
@@ -44,4 +50,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	//Accurate Y loc, dont @me
 	float CrossHairYLoc = 0.333333;
+
+	UPROPERTY(EditAnywhere)
+		//10km
+	float LineTraceRange = 1000000.0;
+
+	
+	
 };

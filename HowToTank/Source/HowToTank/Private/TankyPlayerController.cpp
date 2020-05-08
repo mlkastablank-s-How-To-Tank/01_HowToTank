@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Engine/World.h"
 #include "HowToTank.h"
 #include "TankyPlayerController.h"
 
@@ -53,13 +54,15 @@ void ATankyPlayerController::Aim()  {
 		return;
 	}
 
-	FVector HitLoc;
+	FVector OutHitLoc; //out parameter
 
-	if (GetSightHitLoc(HitLoc)) {
+	if (GetSightHitLoc(OutHitLoc)) {
 
-		//UE_LOG(LogTemp, Warning, TEXT("HitLoc look direction: %s"), *HitLoc.ToString());
 		
+	
 	//TODO Tell the tank to aim
+
+		GetControlledTank() -> AimAt(OutHitLoc);
 
 	}
 
@@ -69,11 +72,8 @@ void ATankyPlayerController::Aim()  {
 
 //Get Hit Location of the line trace through the aim crosshairs, true if shit hits
 
-bool ATankyPlayerController::GetSightHitLoc(FVector& OutHitLoc) const{
+bool ATankyPlayerController::GetSightHitLoc(FVector& OutHitLoc) const {
 
-
-	//For testing
-	/*OutHitLoc = FVector(1.0);*/
 
 	//Pixel coordinates
 	int32 viewPortSizeX, viewPortSizeY;
@@ -81,15 +81,63 @@ bool ATankyPlayerController::GetSightHitLoc(FVector& OutHitLoc) const{
 	GetViewportSize(viewPortSizeX, viewPortSizeY);
 
 	FVector2D ScreenLoc(viewPortSizeX * CrossHairXLoc, viewPortSizeY * CrossHairYLoc);
+
+
+
+	//DeProject the screen pos of the crosshair to a world direction
+
+
+	//Unit Vector
+	FVector WorldDir;
 	
-	//UE_LOG(LogTemp, Warning, TEXT("ScreenLoc: %s"), *ScreenLoc.ToString());
+	if (GetLookDir(ScreenLoc, WorldDir)) {
 
-
-	//De Project the screen pos of the crosshair to a world direction
-	//trace along the look direction (like a invisible laser sight)
+		//trace along the look direction (like a invisible laser sight)
+		GetLookVectorHitLoc(WorldDir, OutHitLoc);
+	}
+	
 
 
 	return true;
 
 
 }
+
+bool ATankyPlayerController::GetLookVectorHitLoc(FVector WorldDir,FVector& OutHitLoc) const {
+
+
+	FHitResult hitResult;
+	auto startLoc = PlayerCameraManager->GetCameraLocation();
+	auto endLoc = startLoc + (WorldDir * LineTraceRange);
+
+
+	//LineTrace succeeds
+	if (GetWorld()->LineTraceSingleByChannel(hitResult,startLoc,endLoc,ECollisionChannel::ECC_Visibility)) {
+
+		//Set hit loc
+
+		OutHitLoc = hitResult.Location;
+		return true;
+	}
+	else {
+		return false;
+	}
+
+}
+
+
+//ScreenLoc = WorldLocation
+bool ATankyPlayerController::GetLookDir(FVector2D ScreenLoc, FVector& WorldDir) const{
+
+
+	FVector CameraWorldLoc; //will be deleted
+	
+
+	return DeprojectScreenPositionToWorld(ScreenLoc.X, ScreenLoc.Y, CameraWorldLoc, WorldDir);
+	
+
+
+
+}
+
+

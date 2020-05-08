@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Engine/World.h"
 #include "HowToTank.h"
 #include "TankAiController.h"
 
@@ -23,6 +24,28 @@ void ATankAiController::BeginPlay(){
 
 }
 
+
+
+
+void ATankAiController::Tick(float DeltaTime) {
+
+	Super::Tick(DeltaTime);
+
+
+	if (GetPlayerTank()) {
+	//Scream
+
+
+	//Aim
+
+	GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+	//Fire
+
+
+	}
+	
+}
+
 ATank* ATankAiController::GetControlledTank() const {
 
 
@@ -32,7 +55,6 @@ ATank* ATankAiController::GetControlledTank() const {
 
 	
 }
-
 ATank* ATankAiController::GetPlayerTank() const {
 
 
