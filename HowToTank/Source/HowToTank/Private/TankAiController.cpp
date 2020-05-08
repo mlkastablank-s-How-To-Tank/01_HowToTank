@@ -33,6 +33,7 @@ void ATankAiController::Tick(float DeltaTime) {
 
 
 	if (GetPlayerTank()) {
+
 	//Scream
 
 
