@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "TankAimComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
@@ -14,6 +15,15 @@ class HOWTOTANK_API ATank : public APawn
 public:
 
 	void AimAt(FVector HitLoc);
+
+	
+	UFUNCTION(BlueprintCallable, Category = Setup)//call from BP
+	void setBarrelRef(UStaticMeshComponent* SetToBarrel);
+
+
+protected:
+
+	UTankAimComponent* TankAimComponent = nullptr;
 
 private:
 	// Sets default values for this pawn's properties
