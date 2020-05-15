@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "Kismet/GameplayStatics.h"
+#include "HowToTank.h"
 #include "TankAimComponent.h"
 
 // Sets default values for this component's properties
@@ -18,6 +19,7 @@ UTankAimComponent::UTankAimComponent()
 void UTankAimComponent::setBarrelRef(UStaticMeshComponent* SetTheBarrel) {
 
 	Barrel = SetTheBarrel;
+	
 
 }
 
@@ -42,9 +44,40 @@ void UTankAimComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 
 
 //Aim at event
-void UTankAimComponent::AimAt(FVector OutHitLoc) {
+void UTankAimComponent::AimAt(FVector OutHitLoc, float LaunchSpied) {
 
-	auto tankName = GetOwner()->GetName();
-	auto BarrelLocation = Barrel->GetComponentLocation().ToString();
-	UE_LOG(LogTemp, Warning, TEXT(" %s aiming at %s from %s%"), *tankName, *OutHitLoc.ToString(),*BarrelLocation);
+
+	if (!Barrel) { 
+		return;
+	}
+
+
+
+	//The toss velocity
+	FVector OutLaunchVelocity(0);
+	FVector StartLoc = Barrel->GetSocketLocation(FName("Projectile"));
+	
+	//auto tankName = GetOwner()->GetName();
+	//auto BarrelLocation = Barrel->GetComponentLocation().ToString();
+	//UE_LOG(LogTemp, Warning, TEXT(" %s aiming at %s from %s%"), *tankName, *OutHitLoc.ToString(),*BarrelLocation);
+
+
+
+
+	//Calculate the OutLaunchVelocity
+
+	if (UGameplayStatics::SuggestProjectileVelocity(this,OutLaunchVelocity,StartLoc,OutHitLoc,LaunchSpied
+		,false,0,0, ESuggestProjVelocityTraceOption::DoNotTrace)) {
+
+
+		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+		auto TankName = GetOwner()->GetName();
+		UE_LOG(LogTemp, Warning, TEXT("%sAiming at %s"), *TankName,*AimDirection.ToString());
+		
+	}
+	else {
+
+	}
+	
+	
 }

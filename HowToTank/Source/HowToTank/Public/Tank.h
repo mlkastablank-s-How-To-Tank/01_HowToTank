@@ -19,6 +19,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = Setup)//call from BP
 	void setBarrelRef(UStaticMeshComponent* SetToBarrel);
+	
 
 
 protected:
@@ -39,5 +40,10 @@ private:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+
+
+	UPROPERTY(EditAnywhere, Category = Firing)
+		float LaunchSpeeeed = 100000; //TODO find sensible default
 
 };
