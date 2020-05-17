@@ -7,6 +7,13 @@
 #include "TankAimComponent.generated.h"
 
 
+//Forward Decleration
+class UTankBarrel;
+
+
+
+//Holds para for barrel properties ...oh and elevate the method
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class HOWTOTANK_API UTankAimComponent : public UActorComponent
 {
@@ -14,26 +21,32 @@ class HOWTOTANK_API UTankAimComponent : public UActorComponent
 
 	
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+
 
 public:	
 
 	// Sets default values for this component's properties
 	UTankAimComponent();
 
-	void setBarrelRef(UStaticMeshComponent* SetTheBarrel);
+	void setBarrelRef(UTankBarrel * SetTheBarrel);
 
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	
+	//TODO add SetTurretRef
+	//void SetTurretRef(UStaticMeshComponent* SetTheTurret);
+
+	
 
 	void AimAt(FVector OutHitLoc, float LaunchSpeeeeed
 	);
+
+	
 
 private:
 
 	//Static mesh for Mull's tank
 
 	//Static Mesh for default tanks
-	UStaticMeshComponent* Barrel = nullptr;
+	void MoveBarrelTo(FVector AimDir);
+	UTankBarrel* Barrel = nullptr;
+	UStaticMeshComponent* Turret = nullptr;
 };

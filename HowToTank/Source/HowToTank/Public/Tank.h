@@ -7,6 +7,9 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
+
+class UTankBarrel;
+
 UCLASS()
 class HOWTOTANK_API ATank : public APawn
 {
@@ -18,7 +21,7 @@ public:
 
 	
 	UFUNCTION(BlueprintCallable, Category = Setup)//call from BP
-	void setBarrelRef(UStaticMeshComponent* SetToBarrel);
+	void setBarrelRef(UTankBarrel* SetToBarrel);
 	
 
 
